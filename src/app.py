@@ -26,40 +26,26 @@ def index() -> str:
     return render_template("./index.html")
 
 
-@application.route("/tomorrow_plan", methods=["GET", "POST"])
+@application.route("/dashboard", methods=["GET", "POST"])
 def tomorrow_plan() -> str:
-    """明日の予定を表示する
-
-    Returns:
-        str: レンダリング結果
-    """
-    # 明日の日付（曜日表示付き）
-    DAY_NAME = "月火水木金土日"
-    tomorrow_dt = datetime.now() + timedelta(days=1)
-    tomorrow_dt_str = f"{tomorrow_dt.strftime('%Y/%m/%d')}({DAY_NAME[tomorrow_dt.weekday()]})"
-
-    # 明日の天気予報
-    weather_osaka = weather_forecast.get_osaka_tomorrow_weather()
-
-    # 明日の時間割
-    tomorrow_lessons = school_timetable.get_tomorrow_timetable()
-    timetable = [[lesson.period, lesson.subject, lesson.classroom, lesson.teacher] for lesson in tomorrow_lessons]
-
-    # おみくじを引く
-    if request.method == "POST":
-        fortune = omikuji.draw()
-        fortune_result = fortune.result.value
-        fortune_advice = fortune.advice
-    else:  # GET
-        fortune_result = ""
-        fortune_advice = ""
+    exercises = [
+        {'date': '2024-12-21', 'type': 'ランニング', 'duration': 30},
+        {'date': '2024-12-22', 'type': 'ウォーキング', 'duration': 45}
+    ]
+    meals = [
+        {'date': '2024-12-21', 'name': '朝食', 'calories': 300},
+        {'date': '2024-12-21', 'name': '昼食', 'calories': 500}
+    ]
+    bmi = 22.5
+    bmi_message = '正常体重です'
+    advice = '定期的な運動を続けましょう！'
 
     return render_template(
-        "./tomorrow_plan.html",
-        date=tomorrow_dt_str,
-        weather_area="大阪",
-        weather_result=weather_osaka,
-        school_timetable=timetable,
-        fortune_result=fortune_result,
-        fortune_advice=Markup(fortune_advice.replace("\n", "<br>")),
+        './dashboard.html',
+        exercises=exercises,
+        meals=meals,
+        bmi=bmi,
+        bmi_message=bmi_message,
+        advice=advice
     )
+
