@@ -49,3 +49,26 @@ def tomorrow_plan() -> str:
         advice=advice
     )
 
+@application.route("/add", methods=["GET", "POST"])
+def add_record() -> str:
+    """記録を追加するページ
+
+    Returns:
+        str: レンダリング結果
+    """
+    if request.method == "POST":
+        # フォームデータを取得
+        record_type = request.form.get("record_type")  # 運動か食事か
+        date = request.form.get("date")
+        if record_type == "exercise":
+            exercise_type = request.form.get("type")
+            duration = request.form.get("duration")
+            # ここでデータを保存する処理を追加（データベースやファイルなど）
+            print(f"運動記録追加: {date}, {exercise_type}, {duration}分")
+        elif record_type == "meal":
+            meal_name = request.form.get("name")
+            calories = request.form.get("calories")
+            # ここでデータを保存する処理を追加（データベースやファイルなど）
+            print(f"食事記録追加: {date}, {meal_name}, {calories}kcal")
+
+    return render_template('./add.html')

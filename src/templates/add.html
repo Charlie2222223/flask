@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記録追加</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">記録を追加</h1>
+        <form method="POST" action="/add">
+            <div class="mb-3">
+                <label for="record_type" class="form-label">記録の種類</label>
+                <select id="record_type" name="record_type" class="form-select" required>
+                    <option value="exercise">運動記録</option>
+                    <option value="meal">食事記録</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="date" class="form-label">日付</label>
+                <input type="date" id="date" name="date" class="form-control" required>
+            </div>
+            <div id="exercise-fields">
+                <div class="mb-3">
+                    <label for="type" class="form-label">運動の種類</label>
+                    <input type="text" id="type" name="type" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="duration" class="form-label">運動時間 (分)</label>
+                    <input type="number" id="duration" name="duration" class="form-control">
+                </div>
+            </div>
+            <div id="meal-fields" style="display: none;">
+                <div class="mb-3">
+                    <label for="name" class="form-label">食事内容</label>
+                    <input type="text" id="name" name="name" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="calories" class="form-label">カロリー (kcal)</label>
+                    <input type="number" id="calories" name="calories" class="form-control">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100">記録を保存</button>
+        </form>
+    </div>
+
+    <script>
+        const recordType = document.getElementById("record_type");
+        const exerciseFields = document.getElementById("exercise-fields");
+        const mealFields = document.getElementById("meal-fields");
+
+        recordType.addEventListener("change", (event) => {
+            if (event.target.value === "exercise") {
+                exerciseFields.style.display = "block";
+                mealFields.style.display = "none";
+            } else if (event.target.value === "meal") {
+                exerciseFields.style.display = "none";
+                mealFields.style.display = "block";
+            }
+        });
+    </script>
+</body>
+
+</html>
